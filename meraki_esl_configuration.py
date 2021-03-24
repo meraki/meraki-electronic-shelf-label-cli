@@ -9,7 +9,7 @@ def get_meraki_auth_headers(api_key):
 
 
 def is_valid_url_and_key(api_key, base_url):
-    url = f'{base_url}/api/v0/organizations'
+    url = '{}/api/v0/organizations'.format(base_url)
     headers = get_meraki_auth_headers(api_key)
     try:
         res = requests.get(url, headers=headers)
@@ -37,7 +37,7 @@ def cli(ctx, api_key, base_url):
 @click.option('--network_id', prompt=True, required=True, help='This is your meraki network_id')
 @click.pass_context
 def get_network_settings(ctx, network_id):
-    url = f'{ctx.obj["base_url"]}/api/v0/networks/{network_id}/wireless/electronicShelfLabel'
+    url = '{}/api/v0/networks/{}/wireless/electronicShelfLabel'.format(ctx.obj["base_url"], network_id)
     headers = get_meraki_auth_headers(ctx.obj['api_key'])
     res = requests.get(url, headers=headers)
     print_request_payload(res)
@@ -49,7 +49,7 @@ def get_network_settings(ctx, network_id):
 @click.option('--host_name', prompt=True, required=True, help='This is the host name')
 @click.pass_context
 def edit_network_settings(ctx, network_id, enabled, host_name):
-    url = f'{ctx.obj["base_url"]}/api/v0/networks/{network_id}/wireless/electronicShelfLabel'
+    url = '{}/api/v0/networks/{}/wireless/electronicShelfLabel'.format(ctx.obj["base_url"], network_id)
     headers = get_meraki_auth_headers(ctx.obj['api_key'])
     body = dict()
     body['enabled'] = enabled
@@ -62,7 +62,8 @@ def edit_network_settings(ctx, network_id, enabled, host_name):
 @click.option('--network_id', prompt=True, required=True, help='This is your meraki network_id')
 @click.pass_context
 def list_eligible_devices(ctx, network_id):
-    url = f'{ctx.obj["base_url"]}/api/v0/networks/{network_id}/wireless/electronicShelfLabel/configuredDevices'
+    url = f'{}/api/v0/networks/{network_id}/wireless/electronicShelfLabel/configuredDevices'
+    url = '{}/api/v0/networks/{}/wireless/electronicShelfLabel/configuredDevices'.format(ctx.obj["base_url"], network_id)
     headers = get_meraki_auth_headers(ctx.obj['api_key'])
     res = requests.get(url, headers=headers)
     print_request_payload(res)
